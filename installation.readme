@@ -20,7 +20,7 @@ $ nano
 
 # seed the database
 $ node bin/seed.js
-$ ctrl + v to kill the node shell
+$ ctrl + c to kill the node shell
 
 # then you're ready to launch the backend
 $ npm run dev

@@ -6,6 +6,7 @@ const router = new express.Router();
 
 const artistModel = require("../models/Artist");
 const albumModel = require("../models/Album");
+const styleModel = require("../models/Style")
 
 const getAverageRate = async idArtist => {
   // use agregate features @ mongo db to code this feature
@@ -55,7 +56,14 @@ router.get("/filtered-artists", (req, res, next) => {
 });
 
 router.post("/artists", (req, res) => {
-  res.status(200).json({ msg: "@todo" })
+  artistModel
+  .create(req.body)
+  .then(createdArtist=> {
+  res.status(200).json(createdArtist)
+  })
+  .catch(err => {
+    res.status(500).json(err);
+  });
 });
 
 router.patch("/artists/:id", async (req, res, next) => {
@@ -65,5 +73,16 @@ router.patch("/artists/:id", async (req, res, next) => {
 router.delete("/artists/:id", (req, res, next) => {
   res.status(200).json({ msg: "@todo" })
 });
+
+// router.get("/admin/artists/create", (req, res, next) => {
+//   styleModel
+//     .find()
+//     .then(styles => {
+//       res.status(200).json(styles)
+//     })
+//     .catch(err => {
+//       res.status(500).json(err);
+//     });
+// });
 
 module.exports = router;
