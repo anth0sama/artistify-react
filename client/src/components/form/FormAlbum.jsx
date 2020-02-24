@@ -10,6 +10,7 @@ import IconAvatarAdmin from "./../icon/IconAvatarAdmin";
 import apiHandler from "./../../api/APIHandler";
 
 
+
 const artists = [1, 2, 3]
 const labels = [1, 2, 3]
 
@@ -34,6 +35,18 @@ class FormAlbum extends Component {
     .catch(apiErr => console.error(apiErr));
   }
 
+  handleImage = e => {
+    // console.log("Signup@handle image", e.target.files[0]);
+    this.setState({ avatar: e.target.files[0] }, () => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // when the fileREader ends  ...
+        const baseString = reader.result; // get the image as a base64 encoded string
+        this.setState({ tmpAvatar: baseString }); // set the tmp avatar as an image source before upload
+      };
+      reader.readAsDataURL(this.state.avatar); // read the file from the local disk
+    });
+  };
 
   updateState = e => {
     // if (e.target.name === "avatar") return;
@@ -41,13 +54,10 @@ class FormAlbum extends Component {
   };
   render() {
     return (
-      <React.Fragment>
         <form action="/album" method="post" className="form"
           onChange={this.updateState}
           onSubmit={e => e.preventDefault()}>
-          
-
-
+ 
           <label className="label" for="title">title</label>
           <input className="input" id="title" type="text" name="title" value="test artist" />
 
@@ -89,8 +99,6 @@ class FormAlbum extends Component {
           <button className="btn">ok</button>
 
         </form>
-        <LabPreview name="albumForm" isSmall />
-      </React.Fragment>
     );
   }
 }

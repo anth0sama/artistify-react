@@ -56,12 +56,24 @@ router.get("/filtered-artists", (req, res, next) => {
 });
 
 router.post("/artists", (req, res) => {
+
+  const { name, description, style, isBand } = req.body;
+
+  const newArtist = {
+    name,
+    description,
+    style,
+    isBand
+  };
+  
+
   artistModel
-  .create(req.body)
+  .create(newArtist)
   .then(createdArtist=> {
-  res.status(200).json(createdArtist)
+  res.status(200).json({msg: "signup ok"})
   })
   .catch(err => {
+    console.log("signup error", err);
     res.status(500).json(err);
   });
 });
