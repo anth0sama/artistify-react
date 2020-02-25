@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 // custom tools
 // import CustomInputFile from "./../icon/IconAvatarAdmin";
-import LabPreview from "../LabPreview";
 // styles
 import "./../../styles/form.css";
 import "./../../styles/icon-avatar.css";
@@ -11,7 +10,7 @@ import apiHandler from "./../../api/APIHandler";
 
 
 
-class FormAlbum extends Component {
+class FormUpdateAlbum extends Component {
   state = {
     title: "",
     avatar: "",
@@ -23,6 +22,9 @@ class FormAlbum extends Component {
     label: "",
     releaseDate: ""
   }
+
+
+
 
 
   handleSubmit = async e => {
@@ -38,7 +40,7 @@ class FormAlbum extends Component {
     fd.append("cover", this.state.avatar);
 
     try {
-      await apiHandler.post("/albums", fd);
+      await apiHandler.patch(`/albums/${this.props.match.params.id}`, fd);
   
       this.props.history.push("/admin/albums");
     } catch (err) {
@@ -49,12 +51,26 @@ class FormAlbum extends Component {
 
 
   componentDidMount() {
+    apiHandler
+    .get(`/albums/${this.props.match.params.id}`)
+    .then(apiRes => {
+        this.setState(apiRes.data);
+        this.setState({avatar:apiRes.data.cover, tmpAvatar:apiRes.data.cover })
+        console.log(this.state);
+        
+    })
+    .catch(apiErr => console.error(apiErr));
+
+
+
     Promise.all([apiHandler.get("/artists"),apiHandler.get("/labels")])
     .then(apiRes => {      
       this.setState({ artists: apiRes[0].data.artists , labels: apiRes[1].data.labels })
     })
     .catch(apiErr => console.error(apiErr));
   }
+
+
 
   handleImage = e => {
     // console.log("Signup@handle image", e.target.files[0]);
@@ -80,12 +96,11 @@ class FormAlbum extends Component {
           onSubmit={this.handleSubmit}>
  
           <label className="label" for="title">title</label>
-          <input className="input" id="title" type="text" name="title"/>
+          <input className="input" id="title" type="text" name="title" value={this.state.title}/>
 
 
           <label className="label" for="artist">artist</label>
-          <select name="artist" id="artist" >
-            <option value="-1" disabled selected>Choose an artist</option>
+          <select name="artist" id="artist" value={this.state.artist}>
             {this.state.artists.map((artist, i) => (
               <option key={i} value={artist._id} >{artist.name}</option>
             ))}
@@ -94,8 +109,7 @@ class FormAlbum extends Component {
 
 
           <label className="label" for="label">label</label>
-          <select name="label" id="label" >
-            <option value="-1" disabled selected>Choose a label</option>
+          <select name="label" id="label" value={this.state.label}>
             {this.state.labels.map((label, i) => (
               <option key={i} value={label._id} >{label.name}</option>
             ))}
@@ -103,17 +117,17 @@ class FormAlbum extends Component {
           <br />
 
           <label className="label" for="releaseDate">releaseDate</label>
-          <input className="input" id="releaseDate" type="date" name="releaseDate" />
+          <input className="input" id="releaseDate" type="date" name="releaseDate" value={this.state.releaseDate}/>
 
 
           <label className="label" htmlFor="avatar">
           cover
           </label>
-          <IconAvatarAdmin avatar={this.state.tmpAvatar} clbk={this.handleImage} />
+          <IconAvatarAdmin avatar={this.state.tmpAvatar} clbk={this.handleImage}/>
 
 
           <label className="label" for="description">description</label>
-          <textarea className="input" id="description" type="text" name="description">
+          <textarea className="input" id="description" type="text" name="description" value={this.state.description}>
           </textarea>
 
 
@@ -124,4 +138,4 @@ class FormAlbum extends Component {
   }
 }
 
-export default withRouter(FormAlbum);
+export default withRouter(FormUpdateAlbum);

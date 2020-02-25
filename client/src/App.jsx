@@ -6,10 +6,10 @@ import AdminTables from "./views/AdminTables";
 import AdminForms from "./views/AdminForms";
 import Artists from "./views/Artists";
 import Artist from "./views/Artist";
-import FormArtist from "./components/form/FormArtist";
+import FormUpdateArtist from "./components/form/FormUpdateArtist";
 import Albums from "./views/Albums";
 import Album from "./views/Album";
-import FormAlbum from "./components/form/FormAlbum";
+import FormUpdateAlbum from "./components/form/FormUpdateAlbum";
 import Contact from "./views/Contact";
 import Dashboard from "./views/Dashboard";
 import Signin from "./views/Signin";
@@ -82,15 +82,16 @@ export default function App() {
                 path="/admin/:endpoint(albums|artists|labels|styles)/"
                 component={AdminTables}
               />
+              
               <Route
                 exact
-                path="/admin/artists/create"
-                component={FormArtist}
+                path="/admin/artists/edit/:id"
+                component={FormUpdateArtist}
               />
               <Route
                 exact
-                path="/admin/album/create"
-                component={FormAlbum}
+                path="/admin/albums/edit/:id"
+                component={FormUpdateAlbum}
               />
               <ProtectedRoute
                 exact

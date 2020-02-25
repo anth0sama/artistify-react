@@ -21,18 +21,17 @@ export default function Albums() {
 
   return (
     <React.Fragment>
-      <h1 className="title diy">D.I.Y</h1>
-      <p>
-        Fetch all Albums from the database.
-        <br />
-        Display a card for each album.
-        <br />
-        Provide a router {`<Link>`} to="albums/album.id",
-        <br />
-        leading to separate Album (details) component.
-        <br />
-        If the albums list is empty, provide a default view.
-      </p>
+      <h1>All Albums</h1>
+        <div className="cards">
+          {albums.map((album, i) => (
+            <div key={i}>
+              <CardAlbum data={album} />
+            </div>
+          ))}
+        </div>
+
+
+
       <h1 className="title diy">D.I.Y</h1>
       <p>
         Import a custom {`<IconFavorite />`} on each album card.

@@ -28,8 +28,8 @@ class FormArtist extends Component {
           style: this.state.style,
           isBand: this.state.isBand
         });
+      this.props.history.push("/admin/artists");
 
-      // this.props.history.push("/artists");
     } catch (err) {
 
       // this.props.history.push("/artists");

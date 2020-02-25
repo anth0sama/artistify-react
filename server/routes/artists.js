@@ -48,7 +48,13 @@ router.get("/artists", async (req, res, next) => {
 
 
 router.get("/artists/:id", (req, res, next) => {
-  res.status(200).json({ msg: "@todo" })
+  const artistId = req.params.id;
+  artistModel
+  .findById(artistId)
+    .then(dbRes => {
+      res.status(200).json(dbRes);
+    })
+    .catch(next);
 });
 
 router.get("/filtered-artists", (req, res, next) => {
@@ -70,17 +76,39 @@ router.post("/artists", (req, res) => {
   artistModel
   .create(newArtist)
   .then(createdArtist=> {
-  res.status(200).json({msg: "signup ok"})
+  res.status(200).json({msg: "new artist created"})
   })
   .catch(err => {
-    console.log("signup error", err);
+    console.log("create error", err);
     res.status(500).json(err);
   });
 });
 
-router.patch("/artists/:id", async (req, res, next) => {
-  res.status(200).json({ msg: "@todo" })
+router.patch("/artists/:id", (req, res) => {
+  const { name, description, style, isBand } = req.body;
+
+  const updateArtist = {
+    name,
+    description,
+    style,
+    isBand
+  };
+
+  const artistId = req.params.id;
+
+  artistModel
+    .findByIdAndUpdate(artistId, updateArtist)
+    .then(dbRes => {
+      res.status(200).json(dbRes);
+    })
+    .catch(err => {
+      console.log("patch error", err);
+      res.status(500).json(err);
+    });
+
 });
+
+
 
 router.delete("/artists/:id", (req, res, next) => {
   res.status(200).json({ msg: "@todo" })

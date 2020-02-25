@@ -53,15 +53,71 @@ router.get("/albums", (req, res, next) => {
 });
 
 router.get("/albums/:id", (req, res, next) => {
-  res.status(200).json({ msg: "@todo" })
+  const albumId = req.params.id;
+  albumModel
+  .findById(albumId)
+    .then(dbRes => {
+      res.status(200).json(dbRes);
+    })
+    .catch(next);
 });
 
-router.post("/albums", uploader.single("cover"), (req, res, next) => {
-  res.status(200).json({ msg: "@todo" })
+
+
+
+
+router.post("/albums",uploader.single("cover"),  (req, res) => {
+
+  const { title, artist, description, label, releaseDate } = req.body;
+
+  const newAlbum = {
+    title,
+    artist,
+    description,
+    label,
+    releaseDate
+  };
+
+  if (req.file) newAlbum.cover = req.file.secure_url;
+
+
+  albumModel
+  .create(newAlbum)
+  .then(createdAlbum=> {
+  res.status(200).json({msg: "new album created"})
+  })
+  .catch(err => {
+    console.log("create error", err);
+    res.status(500).json(err);
+  });
 });
+
+
 
 router.patch("/albums/:id", uploader.single("cover"), (req, res, next) => {
-  res.status(200).json({ msg: "@todo" })
+  const { title, artist, description, label, releaseDate } = req.body;
+
+  const updateAlbum = {
+    title,
+    artist,
+    description,
+    label,
+    releaseDate
+  };
+
+  if (req.file) updateAlbum.cover = req.file.secure_url;
+
+  const albumId = req.params.id;
+
+  albumModel
+    .findByIdAndUpdate(albumId, updateAlbum)
+    .then(dbRes => {
+      res.status(200).json(dbRes);
+    })
+    .catch(err => {
+      console.log("patch error", err);
+      res.status(500).json(err);
+    });
 });
 
 router.delete("/albums/:id", (req, res, next) => {

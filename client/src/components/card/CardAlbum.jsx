@@ -6,5 +6,14 @@ import IconFav from "../icon/IconFavorite";
 import "./../../styles/icon-color.css";
 
 export default function CardArtist({ data }) {
-  return <div>@todo</div>;
+  return <div className="card shadow-box cover">
+    <Link to={`/albums/${data._id}`}>
+      <div className="link title">{data.title}</div>
+      <img src={data.cover} className="cover" alt="cover"/>
+    </Link>
+    
+    <IconFav />
+
+
+  </div >
 }

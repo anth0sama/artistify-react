@@ -1,6 +1,7 @@
 import React from "react";
 // custom tools
 import FormArtist from "./../components/form/FormArtist";
+import FormUpdateArtist from "./../components/form/FormUpdateArtist";
 import FormAlbum from "./../components/form/FormAlbum";
 import FormStyle from "./../components/form/FormStyle";
 import FormLabel from "./../components/form/FormLabel";

@@ -6,5 +6,21 @@ import IconFav from "../icon/IconFavorite";
 import "./../../styles/icon-color.css";
 
 export default function CardArtist({ data }) {
-  return <div>@todo</div>;
+  return (
+    <div className="card shadow-box">
+      <div className="color" 
+      style={{backgroundColor:data.style.color}}>
+        </div>
+
+      <Link to={`/artists/${data._id}`}>
+        <div className="link title">{data.name}</div>
+      </Link>
+      <IconFav/>
+
+
+    </div >
+
+
+
+  )
 }
